@@ -16,7 +16,7 @@ print(">>SEED:", world.seed)
 import register
 from register import dataset
 
-
+print("Using device:", world.device)
 
 
 if not os.path.exists('logs'):
@@ -92,14 +92,19 @@ try:
                 patience = 0
                 
                 Recmodel.eval()
-                all_users, all_items, _all_users, _all_items = Recmodel.computer()
-                all_users, all_items = all_users.detach().cpu(), all_items.detach().cpu()
-                _all_users, _all_items = _all_users.detach().cpu(), _all_items.detach().cpu()
-
+                result = Recmodel.computer()
+                # 兼容2个或4个返回值
                 with open(emb_path, 'wb') as f:
                     if world.args.save_layer_emb:
-                        pkl.dump([all_users, all_items, _all_users, _all_items], f)
+                        if isinstance(result, (list, tuple)) and len(result) == 4:
+                            all_users, all_items, _all_users, _all_items = result
+                            pkl.dump([all_users, all_items, _all_users, _all_items], f)
+                        else:
+                            print("Warning: save_layer_emb为True但只返回2个embedding")
+                            all_users, all_items = result
+                            pkl.dump([all_users, all_items], f)
                     else:
+                        all_users, all_items = result
                         pkl.dump([all_users, all_items], f)
             else:
                 patience += 1
