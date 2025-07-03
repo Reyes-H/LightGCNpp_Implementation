@@ -32,6 +32,7 @@ This project implements and evaluates **LightGCN++**, an enhanced version of the
 ### Model Variants
 - **LightGCN++ (lgn)**: Enhanced graph convolutional network with improved flexibility
 - **Matrix Factorization (mf)**: Traditional collaborative filtering baseline
+- **LightGCN**: Graph convolutional network, old model,from SIGIR 2020:https://github.com/gusye1234/LightGCN-PyTorch
 
 ## 🚀 Quick Start
 
@@ -88,6 +89,38 @@ The model uses the following default hyperparameters:
 - **Learning Rate**: 0.001
 - **Embedding Dimension**: 64
 - **Number of Layers**: 2
+ 
+### Simple experiment reproduction of LightGCN++ and ligtGCN
+
+#### Training and Testing
+```python SELFRec/main.py```
+Run this python program every time, but manually set different parameters for the parser variable each time.
+ 
+#### Core parameter description
+- **epoch**: - The number of training rounds,always 20
+ 
+- **α (alpha)**: - Controls the balance between ego and propagated embeddings
+- **β (beta)**: - Negative sampling parameter
+- **γ (gamma)**: - Weight for the final embedding combination
+ 
+- **dataset**: - Select the dataset for this experiment
+- **model_name**: - Select the model for this experiment
+
+#### Experimental run setup
+| No.experiment | dataset       | model_name   | α (alpha) | β (beta) | γ (gamma) |
+|---------------|---------------|--------------|-----------|----------|-----------|
+| 1             | 'amazon-book' | 'LightGCN'   | -         | -        | -         |
+| 2             | 'amazon-book' | 'LightGCNpp' | 1.0       | 1.0      | 0.5       |
+| 3             | 'amazon-book' | 'LightGCNpp' | 0.6       | -0.1     | 0.2       |
+| 4             | 'gowalla'     | 'LightGCN'   | -         | -        | -         |
+| 5             | 'gowalla'     | 'LightGCNpp' | 1.0       | 1.0      | 0.5       |
+| 6             | 'gowalla'     | 'LightGCNpp' | 0.6       | -0.1     | 0.2       |
+| 7             | 'lastfm'      | 'LightGCN'   | -         | -        | -         |
+| 8             | 'lastfm'      | 'LightGCNpp' | 1.0       | 1.0      | 0.5       |
+| 9             | 'lastfm'      | 'LightGCNpp' | 0.6       | -0.1     | 0.0       |
+| 10            | 'yelp2018'    | 'LightGCN'   | -         | -        | -         |
+| 11            | 'yelp2018'    | 'LightGCNpp' | 1.0       | 1.0      | 0.5       |
+| 12            | 'yelp2018'    | 'LightGCNpp' | 0.6       | -0.1     | 0.0       |
 
 ## 📁 Project Structure
 
@@ -111,6 +144,13 @@ LightGCNpp/
 │   ├── lastfm/            # LastFM dataset
 │   └── gowalla/           # Gowalla dataset
 ├── output/                # All generated visualizations and analysis results from visual.py
+├── SELFRec/                # Simple experiment reproduction of LightGCN++ and ligtGCN
+│   ├── logs/               # Output and plotting code for the experiment
+│   ├── model/              # experiment models
+│   │   └── graph/            # graph models
+│   │       ├── LightGCN.py             # LightGCN, old model
+│   │       └── LightGCNpp.py           # LightGCN++, new model, this paper
+│   └── main.py             # LightGCN++ and LightGCN running script in Simple experiment reproduction
 ├── data_download.py        # Dataset download script
 ├── preprocess.py          # Data preprocessing script
 ├── visual.py              # Visualization and analysis tools
@@ -124,6 +164,14 @@ The model evaluates performance using:
 - **NDCG@20**: Normalized Discounted Cumulative Gain at top-20
 - **Recall@20**: Recall at top-20 recommendations
 - **Precision@20**: Precision at top-20 recommendations
+ 
+In the Simple experiment reproduction stage, the following evaluation indicators are used:
+- **NDCG@10**: Normalized Discounted Cumulative Gain at top-10
+- **Recall@10**: Recall at top-10 recommendations
+- **NDCG@20**: Normalized Discounted Cumulative Gain at top-20
+- **Recall@20**: Recall at top-20 recommendations
+- **NDCG@40**: Normalized Discounted Cumulative Gain at top-40
+- **Recall@40**: Recall at top-40 recommendations
 
 ### Visualization Tools
 
@@ -134,6 +182,14 @@ python visual.py
 ```
 
 **All generated images and visualizations will be saved in the `output/` folder.**
+ 
+**In the Simple experiment reproduction stage, the test performance charts of different models on different data sets are obtained using the following python program and then need to be saved manually.**
+```
+python SELFR/logs/draw_amazon_book.py
+python SELFR/logs/draw_gowalla.py
+python SELFR/logs/draw_lastfm.py
+python SELFR/logs/draw_yelp2018.py
+```
 
 #### The `output/` folder contains:
 - **NDCG@20 Curves** (`ndcg_comparison_{dataset}.png`): For each dataset, a line plot comparing NDCG@20 across epochs for both `lgn` and `mf` models.
