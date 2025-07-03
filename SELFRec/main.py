@@ -10,16 +10,16 @@ import os
 if __name__ == '__main__':
         
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dataset', type=str, default='yelp2018')
+    parser.add_argument('--dataset', type=str, default='amazon-book')
     parser.add_argument('--gpu', type=str, default='0')
     parser.add_argument('--save', type=int, default=0)
     parser.add_argument('--seed', type=int, default=2020)
     parser.add_argument('--output_path', type=str, default='results')
-    parser.add_argument('--model_name', type=str, default='SimGCL')
+    parser.add_argument('--model_name', type=str, default='LightGCNpp')
     parser.add_argument('--model_type', type=str, default='graph')
     parser.add_argument('--item_ranking', type=str, default='10,20,40')
     parser.add_argument('--embedding_size', type=int, default=64)
-    parser.add_argument('--epoch', type=int, default=200)
+    parser.add_argument('--epoch', type=int, default=20) # 200改20
     parser.add_argument('--batch_size', type=int, default=2048)
     parser.add_argument('--learning_rate', type=float, default=0.001)
     parser.add_argument('--reg_lambda', type=float, default=0.0001)
@@ -46,8 +46,8 @@ if __name__ == '__main__':
     parser.add_argument('--hyper_layers', type=int, default=1)
     parser.add_argument('--num_clusters', type=int, default=2000)
     parser.add_argument('--ncl_alpha', type=float, default=1.0)
-    parser.add_argument('--alpha', type=float, default=1.0)
-    parser.add_argument('--beta', type=float, default=1.0)
+    parser.add_argument('--alpha', type=float, default=0.6)
+    parser.add_argument('--beta', type=float, default=-0.1)
     
     parser.add_argument('--lmbda_ii', type=float, default=0.5)
     parser.add_argument('--lmbda_uu', type=float, default=0.5)
@@ -57,7 +57,7 @@ if __name__ == '__main__':
     
     parser.add_argument('--lmbda_1', type=float, default=0.5)
     parser.add_argument('--lmbda_2', type=float, default=0.5)
-    parser.add_argument('--gamma', type=float, default=0.5)
+    parser.add_argument('--gamma', type=float, default=0.2)
     parser.add_argument('--num_neg', type=int, default=1)
     
     parser.add_argument('--left_norm', type=float, default=0.5)
